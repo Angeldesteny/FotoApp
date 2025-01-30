@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -19,7 +20,7 @@ fun FotoScreen() {
     val viewModel: FotoViewModel = hiltViewModel()
     val viewSTate = viewModel.viewState.collectAsState().value
     FotoScreenContent(
-        url = viewSTate,
+        viewState = viewSTate,
         refreshUrl = { viewModel.refreshUrl() },
         loadSmallImage = { viewModel.loadSmallImage() },
         myFoto = { viewModel.myFoto() }
@@ -27,12 +28,12 @@ fun FotoScreen() {
 }
 
 @Composable
-private fun FotoScreenContent(url: String, refreshUrl: () -> Unit, loadSmallImage: () -> Unit, myFoto: () -> Unit) {
+private fun FotoScreenContent(viewState: FotoScreenViewState, refreshUrl: () -> Unit, loadSmallImage: () -> Unit, myFoto: () -> Unit) {
     AsyncImage(
         modifier = Modifier
             .fillMaxWidth()
             .size(300.dp),
-        model = url,
+        model = viewState.url,
         contentDescription = null,
     )
 
@@ -64,11 +65,17 @@ private fun FotoScreenContent(url: String, refreshUrl: () -> Unit, loadSmallImag
     ) {
         Text("Свое фото")
     }
+    Spacer(modifier = Modifier.height(16.dp))
+    /*TextField(
+        value = text.value,
+        onValueChange = { newText -> text.value = newText },
+        label = { Text("Введите текст") }
+    )*/
 }
 
 
 @Preview
 @Composable
 fun FotoScreenContentPreview() {
-    FotoScreenContent("https://picsum.photos/200", {},{},{})
+    FotoScreenContent(FotoScreenViewState(), {}, {}, {})
 }
