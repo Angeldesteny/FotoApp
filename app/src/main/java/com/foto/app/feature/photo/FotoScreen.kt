@@ -18,13 +18,16 @@ import coil3.compose.AsyncImage
 fun FotoScreen() {
     val viewModel: FotoViewModel = hiltViewModel()
     val viewSTate = viewModel.viewState.collectAsState().value
-    FotoScreenContent(url = viewSTate,
-        action = { viewModel.refreshUrl() })
-
+    FotoScreenContent(
+        url = viewSTate,
+        refreshUrl = { viewModel.refreshUrl() },
+        loadSmallImage = { viewModel.loadSmallImage() },
+        myFoto = { viewModel.myFoto() }
+    )
 }
 
 @Composable
-private fun FotoScreenContent(url: String, action: () -> Unit) {
+private fun FotoScreenContent(url: String, refreshUrl: () -> Unit, loadSmallImage: () -> Unit, myFoto: () -> Unit) {
     AsyncImage(
         modifier = Modifier
             .fillMaxWidth()
@@ -37,10 +40,29 @@ private fun FotoScreenContent(url: String, action: () -> Unit) {
     Spacer(modifier = Modifier.height(16.dp))
 
     Button(
-        onClick = { action() },
+        onClick = { refreshUrl() },
         modifier = Modifier.fillMaxWidth()
+
     ) {
-        Text("Первая кнопка")
+        Text("Нормальная картинка")
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Button(
+        onClick = { loadSmallImage() },
+        modifier = Modifier.fillMaxWidth()
+
+    ) {
+        Text("Маленькая картинка")
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+
+    Button(
+        onClick = { myFoto() },
+        modifier = Modifier.fillMaxWidth()
+
+    ) {
+        Text("Свое фото")
     }
 }
 
@@ -48,5 +70,5 @@ private fun FotoScreenContent(url: String, action: () -> Unit) {
 @Preview
 @Composable
 fun FotoScreenContentPreview() {
-    FotoScreenContent("https://picsum.photos/200", {})
+    FotoScreenContent("https://picsum.photos/200", {},{},{})
 }
