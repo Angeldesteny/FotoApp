@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id ("com.google.dagger.hilt.android")
+    id ("kotlin-kapt")
 }
 
 android {
@@ -56,4 +58,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Navigation
+    implementation ("androidx.navigation:navigation-compose:2.7.7")
+    implementation ("androidx.hilt:hilt-navigation-compose:1.2.0")
+    // Hilt
+    val hiltVer = "2.51.1"
+    implementation("com.google.dagger:hilt-android:$hiltVer")
+    kapt("com.google.dagger:hilt-compiler:$hiltVer")
 }
