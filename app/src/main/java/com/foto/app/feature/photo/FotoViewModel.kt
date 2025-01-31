@@ -35,6 +35,12 @@ class FotoViewModel @Inject constructor() : ViewModel() {
         }
     }
 
+    fun setSize(size: String) {
+        _viewState.update{
+            it.copy(size = size )
+
+        }
+    }
 }
 
 

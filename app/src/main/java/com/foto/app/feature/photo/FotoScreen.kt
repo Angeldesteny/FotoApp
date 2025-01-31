@@ -1,5 +1,7 @@
 package com.foto.app.feature.photo
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,59 +25,69 @@ fun FotoScreen() {
         viewState = viewSTate,
         refreshUrl = { viewModel.refreshUrl() },
         loadSmallImage = { viewModel.loadSmallImage() },
-        myFoto = { viewModel.myFoto() }
+        myFoto = { viewModel.myFoto()},
+        setSize = { viewModel.setSize(it)}
     )
 }
 
 @Composable
-private fun FotoScreenContent(viewState: FotoScreenViewState, refreshUrl: () -> Unit, loadSmallImage: () -> Unit, myFoto: () -> Unit) {
-    AsyncImage(
-        modifier = Modifier
-            .fillMaxWidth()
-            .size(300.dp),
-        model = viewState.url,
-        contentDescription = null,
-    )
+private fun FotoScreenContent(
+    viewState: FotoScreenViewState,
+    refreshUrl: () -> Unit,
+    loadSmallImage: () -> Unit,
+    myFoto: () -> Unit,
+    setSize: (String) -> Unit) {
+    Column {
+        AsyncImage(
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(300.dp),
+            model = viewState.url,
+            contentDescription = null,
+        )
 
 
-    Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
-    Button(
-        onClick = { refreshUrl() },
-        modifier = Modifier.fillMaxWidth()
+        Button(
+            onClick = { refreshUrl() },
+            modifier = Modifier.fillMaxWidth()
 
-    ) {
-        Text("Нормальная картинка")
+        ) {
+            Text("Нормальная картинка")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { loadSmallImage() },
+            modifier = Modifier.fillMaxWidth()
+
+        ) {
+            Text("Маленькая картинка")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = { myFoto() },
+            modifier = Modifier.fillMaxWidth()
+
+        ) {
+            Text("Свое фото")
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row {
+            TextField(
+                value = viewState.size,
+                onValueChange = { newText -> setSize(newText) },
+                label = { Text("Введите размер") }
+            )
+        }
     }
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Button(
-        onClick = { loadSmallImage() },
-        modifier = Modifier.fillMaxWidth()
-
-    ) {
-        Text("Маленькая картинка")
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-
-    Button(
-        onClick = { myFoto() },
-        modifier = Modifier.fillMaxWidth()
-
-    ) {
-        Text("Свое фото")
-    }
-    Spacer(modifier = Modifier.height(16.dp))
-    /*TextField(
-        value = text.value,
-        onValueChange = { newText -> text.value = newText },
-        label = { Text("Введите текст") }
-    )*/
 }
 
 
 @Preview
 @Composable
 fun FotoScreenContentPreview() {
-    FotoScreenContent(FotoScreenViewState(), {}, {}, {})
+    FotoScreenContent(FotoScreenViewState(), {}, {}, {},{})
 }
