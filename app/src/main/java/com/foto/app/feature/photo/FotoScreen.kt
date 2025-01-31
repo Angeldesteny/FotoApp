@@ -13,6 +13,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ private fun FotoScreenContent(
     updateSize: (String) -> Unit,
     ganarateUrl: () -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     Column {
         AsyncImage(
             modifier = Modifier
@@ -90,7 +92,10 @@ private fun FotoScreenContent(
             )
             Row {
                 Button(
-                    onClick = { ganarateUrl() },
+                    onClick = {
+                        ganarateUrl()
+                        keyboardController?.hide()
+                    },
                 )
                 {
                     Text("OK")
