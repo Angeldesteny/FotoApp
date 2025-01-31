@@ -35,12 +35,18 @@ class FotoViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun setSize(size: String) {
-        _viewState.update{
-            it.copy(size = size )
+    fun updateSize(size: String) {
+        _viewState.update {
+            it.copy(size = size)
 
         }
     }
+        fun ganarateUrl() {
+            _viewState.update {
+                it.copy(url = "https://picsum.photos/${viewState.value.size}")
+            }
+        }
+
 }
 
 

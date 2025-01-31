@@ -6,12 +6,14 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,7 +28,8 @@ fun FotoScreen() {
         refreshUrl = { viewModel.refreshUrl() },
         loadSmallImage = { viewModel.loadSmallImage() },
         myFoto = { viewModel.myFoto()},
-        setSize = { viewModel.setSize(it)}
+        updateSize = { viewModel.updateSize(it) },
+        ganarateUrl = { viewModel.ganarateUrl() }
     )
 }
 
@@ -36,7 +39,9 @@ private fun FotoScreenContent(
     refreshUrl: () -> Unit,
     loadSmallImage: () -> Unit,
     myFoto: () -> Unit,
-    setSize: (String) -> Unit) {
+    updateSize: (String) -> Unit,
+    ganarateUrl: () -> Unit
+) {
     Column {
         AsyncImage(
             modifier = Modifier
@@ -78,16 +83,27 @@ private fun FotoScreenContent(
         Row {
             TextField(
                 value = viewState.size,
-                onValueChange = { newText -> setSize(newText) },
-                label = { Text("Введите размер") }
-            )
-        }
-    }
-}
+                onValueChange = { newText -> updateSize(newText) },
+                label = { Text("Введите размер") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
 
+            )
+            Row {
+                Button(
+                    onClick = { ganarateUrl() },
+                )
+                {
+                    Text("OK")
+                }
+            }
+        }
+
+    }
+
+}
 
 @Preview
 @Composable
 fun FotoScreenContentPreview() {
-    FotoScreenContent(FotoScreenViewState(), {}, {}, {},{})
+    FotoScreenContent(FotoScreenViewState(), {}, {}, {}, {}, {})
 }
